@@ -29,8 +29,22 @@ class ReservationForm extends Component {
             numberOfPeople: 1,
             smoking: false,
             dateTime: '',
-            specialRequests: ''
+            specialRequests: '',
         }
+    }
+
+    handleInput = (property, value) => {
+        this.setState({
+            reservation: {
+                ...this.state.reservation,
+                [property]: value
+                // property: value <-- writing property in this way will just set a key in the
+                // reservation object called 'property'!!
+                // if you want to READ the value of your parameter, which will be "name", "phone",
+                // "numberOfPeople" etc. you need to EVALUATE your property argument
+                // you can do it creating a key called [property] with square brackets
+            }
+        })
     }
 
     render() {
@@ -41,17 +55,63 @@ class ReservationForm extends Component {
                 <Form>
                     <Form.Group>
                         <Form.Label>Your name</Form.Label>
-                        <Form.Control type="text" placeholder="Insert your name here" />
+                        {/* Form.Control -> <input /> */}
+                        <Form.Control
+                            type="text"
+                            placeholder="Insert your name here"
+                            value={this.state.reservation.name}
+                            onChange={(e) => {
+                                // this is the long way, it works, but it's not impressive...
+                                // this.setState({
+                                //     reservation: {
+                                //         ...this.state.reservation,
+                                //         name: e.target.value,
+                                //         // e.target.value is the text I'm inputting
+                                //     }
+                                // })
+                                this.handleInput('name', e.target.value)
+                            }}
+                        // in every controlled input field you want to have 2 additional props:
+                        // value -> which is going to be bound to a string in the state
+                        // onChange -> which is going to change that property in the state
+                        // -> TWO WAY DATA BINDING
+                        />
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label>Your phone</Form.Label>
-                        <Form.Control type="tel" placeholder="Insert your phone here" />
+                        <Form.Control
+                            type="tel"
+                            placeholder="Insert your phone here"
+                            value={this.state.reservation.phone}
+                            onChange={(e) => {
+                                // this.setState({
+                                //     reservation: {
+                                //         ...this.state.reservation,
+                                //         phone: e.target.value
+                                //         // here I want to retain all the other values as well!
+                                //     }
+                                // })
+                                this.handleInput('phone', e.target.value)
+                            }}
+                        />
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label>How many people?</Form.Label>
-                        <Form.Control as="select">
+                        <Form.Control
+                            as="select"
+                            value={this.state.reservation.numberOfPeople}
+                            onChange={e => {
+                                // this.setState({
+                                //     reservation: {
+                                //         ...this.state.reservation,
+                                //         numberOfPeople: e.target.value
+                                //     }
+                                // })
+                                this.handleInput('numberOfPeople', e.target.value)
+                            }}
+                        >
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -62,17 +122,39 @@ class ReservationForm extends Component {
                     </Form.Group>
 
                     <Form.Group>
-                        <Form.Check type="checkbox" label="Do you smoke?" />
+                        <Form.Check
+                            type="checkbox"
+                            label="Do you smoke?"
+                            // the value of a checkbox "on" || "off"
+                            checked={this.state.reservation.smoking}
+                            // checked can be instead true || false
+                            onChange={e => {
+                                this.handleInput('smoking', e.target.checked)
+                            }}
+                        />
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label>Date & Time</Form.Label>
-                        <Form.Control type="datetime-local" />
+                        <Form.Control
+                            type="datetime-local"
+                            value={this.state.reservation.dateTime}
+                            onChange={e => {
+                                this.handleInput('dateTime', e.target.value)
+                            }}
+                        />
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label>Any special request?</Form.Label>
-                        <Form.Control as="textarea" rows={5} />
+                        <Form.Control
+                            as="textarea"
+                            rows={5}
+                            value={this.state.reservation.specialRequests}
+                            onChange={e => {
+                                this.handleInput('specialRequests', e.target.value)
+                            }}
+                        />
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
