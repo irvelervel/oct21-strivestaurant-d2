@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { Carousel, Container, Row, Col, ListGroup } from 'react-bootstrap'
 import dishes from '../data/menu.json'
+import ReservationForm from './ReservationForm'
 // dishes is the array with 5 objects inside of it (each one being a pasta dish)
 
 // .map() is an array method that modifies the objects and returns to you a new array
@@ -54,6 +55,11 @@ class Home extends Component {
     render() {
         return (
             <Container>
+                <Row className="justify-content-center">
+                    <Col xs={12} md={6}>
+                        <ReservationForm />
+                    </Col>
+                </Row>
                 <Row className="justify-content-center">
                     <Col xs={12} md={6}>
                         <h2 className="my-2">Welcome to Strivestaurant</h2>
